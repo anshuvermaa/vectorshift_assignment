@@ -9,21 +9,26 @@ import axios from 'axios';
 const endpointMapping = {
     'Notion': 'notion',
     'Airtable': 'airtable',
+    'HubSpot': 'hubspot',
 };
 
 export const DataForm = ({ integrationType, credentials }) => {
     const [loadedData, setLoadedData] = useState(null);
     const endpoint = endpointMapping[integrationType];
+    const [pendingData,setPendingData]=useState(false)
 
     const handleLoad = async () => {
         try {
+            setPendingData(true)
             const formData = new FormData();
             formData.append('credentials', JSON.stringify(credentials));
             const response = await axios.post(`http://localhost:8000/integrations/${endpoint}/load`, formData);
             console.log("data is", response.data);
             const data = response.data;
             setLoadedData(data);
+            setPendingData(false)
         } catch (e) {
+            setPendingData(false)
             alert(e?.response?.data?.detail);
         }
     }
@@ -43,7 +48,8 @@ export const DataForm = ({ integrationType, credentials }) => {
                     sx={{mt: 2}}
                     variant='contained'
                 >
-                    Load Data
+                    {pendingData ? "loading..." :"Load Data"}
+                    
                 </Button>
                 <Button
                     onClick={() => setLoadedData(null)}

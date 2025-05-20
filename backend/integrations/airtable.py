@@ -9,17 +9,17 @@ import httpx
 import asyncio
 import base64
 import hashlib
-
 import requests
 from integrations.integration_item import IntegrationItem
 
+from config import settings
 from redis_client import add_key_value_redis, get_value_redis, delete_key_redis
-# patCRXijDjSLPPXFE.59dfcb44abc8e474a88682422394c7adcf3f1c2ccee37c73319cad8b86d503cd hubspot
-# CLIENT_ID = 'XXX'
-# CLIENT_SECRET = 'XXX'
-CLIENT_ID = '20f282ed-a06e-4d69-a1da-a089f14f09fb'
-CLIENT_SECRET = 'b83198ef3f8d817627db36aa3a251d7bc44a75a45ffbd3787d5aaf66cdafa87b'
-REDIRECT_URI = 'http://localhost:8000/integrations/airtable/oauth2callback'
+
+CLIENT_ID = settings.airtable_client_id
+CLIENT_SECRET = settings.airtable_client_secret
+REDIRECT_URI = settings.airtable_redirect_uri
+TOKEN_URL= settings.airtable_token_url
+
 authorization_url = f'https://airtable.com/oauth2/v1/authorize?client_id={CLIENT_ID}&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fintegrations%2Fairtable%2Foauth2callback'
 
 encoded_client_id_secret = base64.b64encode(f'{CLIENT_ID}:{CLIENT_SECRET}'.encode()).decode()
@@ -68,7 +68,7 @@ async def oauth2callback_airtable(request: Request):
     async with httpx.AsyncClient() as client:
         response, _, _ = await asyncio.gather(
             client.post(
-                'https://airtable.com/oauth2/v1/token',
+                TOKEN_URL,
                 data={
                     'grant_type': 'authorization_code',
                     'code': code,
@@ -146,6 +146,7 @@ async def get_items_airtable(credentials) -> list[IntegrationItem]:
     url = 'https://api.airtable.com/v0/meta/bases'
     list_of_integration_item_metadata = []
     list_of_responses = []
+    print(f'credentials: {credentials}')
 
     fetch_items(credentials.get('access_token'), url, list_of_responses)
     for response in list_of_responses:

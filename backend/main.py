@@ -5,10 +5,11 @@ from integrations.airtable import authorize_airtable, get_items_airtable, oauth2
 from integrations.notion import authorize_notion, get_items_notion, oauth2callback_notion, get_notion_credentials
 from integrations.hubspot import authorize_hubspot, get_hubspot_credentials, get_items_hubspot, oauth2callback_hubspot
 
+
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",  # React app address
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 @app.get('/')
 def read_root():
@@ -66,12 +69,14 @@ async def authorize_hubspot_integration(user_id: str = Form(...), org_id: str = 
 
 @app.get('/integrations/hubspot/oauth2callback')
 async def oauth2callback_hubspot_integration(request: Request):
+    print(f"Callback received with query params initailly: {request.query_params}")
     return await oauth2callback_hubspot(request)
 
 @app.post('/integrations/hubspot/credentials')
 async def get_hubspot_credentials_integration(user_id: str = Form(...), org_id: str = Form(...)):
     return await get_hubspot_credentials(user_id, org_id)
 
-@app.post('/integrations/hubspot/get_hubspot_items')
-async def load_slack_data_integration(credentials: str = Form(...)):
+@app.post('/integrations/hubspot/load')
+async def load_hubspot_data_integration(credentials: str = Form(...)):
+    print("credentials: ", credentials)
     return await get_items_hubspot(credentials)
