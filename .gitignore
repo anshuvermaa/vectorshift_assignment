@@ -1,0 +1,47 @@
+# Root
+*.log
+*.sqlite3
+*.rdb
+*.env
+*.DS_Store
+
+# Python / FastAPI
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.egg-info/
+.Python
+venv/
+.env
+dump.rdb
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Node / React
+frontend/node_modules/
+frontend/.next/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.DS_Store
+frontend/pnpm-lock.yaml
+frontend/yarn.lock
+
+# Coverage / Testing
+htmlcov/
+.tox/
+.coverage
+.cache/
+pytest_cache/
+coverage.xml
+*.cover
+*.py[cod]
+
+# OS
+Thumbs.db
+ehthumbs.db
+Icon?
