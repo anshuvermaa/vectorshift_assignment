@@ -11,7 +11,6 @@ export const HubspotIntegration = ({ user, org, integrationParams, setIntegratio
     const [isConnected, setIsConnected] = useState(false);
     const [isConnecting, setIsConnecting] = useState(false);
 
-    // Step 1: Get authorization URL from backend and open OAuth window
     const handleConnectClick = async () => {
         try {
             setIsConnecting(true);
@@ -23,7 +22,6 @@ export const HubspotIntegration = ({ user, org, integrationParams, setIntegratio
 
             const newWindow = window.open(authURL, 'HubSpot Authorization', 'width=600,height=600');
 
-            // Poll to detect when OAuth window is closed
             const pollTimer = window.setInterval(() => {
                 if (newWindow?.closed !== false) {
                     window.clearInterval(pollTimer);
@@ -36,7 +34,6 @@ export const HubspotIntegration = ({ user, org, integrationParams, setIntegratio
         }
     };
 
-    // Step 2: After OAuth flow, fetch stored credentials from backend
     const handleWindowClosed = async () => {
         try {
             const formData = new FormData();
