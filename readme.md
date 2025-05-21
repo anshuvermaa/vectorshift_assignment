@@ -19,8 +19,8 @@ Follow these steps to get the project up and running with a single command:
 First, clone the repository to your local machine.
 
 ```bash
-git clone https://your-repo-url.git
-cd your-repo-directory
+git clone https://github.com/anshuvermaa/vectorshift_assignment/
+cd vectorshift_assignment
 ```
 ### Build and start the services using Docker Compose
 You can now start the project with a single command. This will build and run the backend, frontend, and Redis services in containers.
